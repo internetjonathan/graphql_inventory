@@ -56,7 +56,7 @@ export default function Login(props) {
                         onChange={onChange}
                     />
                     <Button type="submit" primary>
-                        Register
+                        Login
                     </Button>
                 </Form>
                 {Object.keys(errors).length > 0 && (
