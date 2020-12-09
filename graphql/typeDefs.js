@@ -7,7 +7,7 @@ module.exports = gql`
         body: String!
         createdAt: String!
         username: String!
-        completed: Boolean!
+        status: String!
         comments: [Comment]!
     }
     type Comment{
@@ -33,6 +33,7 @@ module.exports = gql`
         getPosts: [Post]
         getPost(postId: ID!): Post
     }
+    
     type Mutation{
         register(registerInput: RegisterInput): User!
         login(username:String!, password: String!): User!
@@ -40,5 +41,8 @@ module.exports = gql`
         deletePost(postId:ID!): String!
         createComment(postId: ID!, body:String!): Post!
         deleteComment(postId:ID!, commentId: ID!): Post!
+    }
+    type Subscription{
+        newPost: Post
     }
 `

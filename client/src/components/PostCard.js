@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Icon, Label, Button } from 'semantic-ui-react'
+import { Card, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 export default function PostCard({ post: { body, createdAt, id, comment, username } }) {
@@ -8,7 +8,7 @@ export default function PostCard({ post: { body, createdAt, id, comment, usernam
     }
     return (
         <div>
-            <Card fluid color='red'>
+            <Card fluid >
                 <Card.Content>
                     <Card.Header as={Link} to={`/posts/${id}`}>{username}</Card.Header>
                     <Card.Meta>{id}</Card.Meta>
@@ -18,11 +18,8 @@ export default function PostCard({ post: { body, createdAt, id, comment, usernam
                 </Card.Content>
                 <Card.Content extra>
                     <div className='ui two buttons'>
-                        <Button basic color='green' onClick={completeOrder}>
-                            Completed
-                        </Button>
-                        <Button basic color='red'>
-                            Incomplete
+                        <Button basic color='teal' as={Link} to={`/posts/${id}`}>
+                            View Order
                         </Button>
                     </div>
                 </Card.Content>

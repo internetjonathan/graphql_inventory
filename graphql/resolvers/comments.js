@@ -3,6 +3,11 @@ const Post = require('../../models/Post');
 const checkAuth = require('../../util/check-auth');
 
 module.exports = {
+    Subscription: {
+        newComment: {
+            subscribe: (_, __, { pubsub }) => pubsub.asyncIterator('NEW_COMMENT')
+        }
+    },
     Mutation: {
         createComment: async (_, { postId, body }, context) => {
             const { username } = checkAuth(context);
@@ -22,6 +27,9 @@ module.exports = {
                     createdAt: new Date().toISOString()
                 })
                 await post.save();
+                context.pubsub.publish('NEW_COMMENT', {
+                    newComment: post
+                })
                 return post;
             } else {
                 throw new UserInputError('post not found')

@@ -1,11 +1,11 @@
 const Post = require('../../models/Post');
 const checkAuth = require('../../util/check-auth');
-
 module.exports = {
+
     Query: {
         async getPosts() {
             try {
-                const posts = await Post.find().sort({ createdAt: -1 });
+                const posts = await Post.find()
                 return posts
             } catch (err) {
                 throw new Error(err)
@@ -27,7 +27,7 @@ module.exports = {
     },
 
     Mutation: {
-        async createPost(_, { body }, context) {
+        createPost: async (_, { body }, context) => {
             const user = checkAuth(context)
 
             if (body.trim() === '') {
@@ -39,16 +39,25 @@ module.exports = {
                 user: user.indexOf,
                 username: user.username,
                 createdAt: new Date().toISOString(),
-                completed: false
+                status: 'pending'
             })
             const post = await newPost.save();
+            context.pubsub.publish('NEW_POST', {
+                newPost: post
+            })
 
             return post
-        },
+        }
+
 
         // async deletePost(_, {postId}, context){
         //     const user = checkAuth(context);
         // }
+    },
+    Subscription: {
+        newPost: {
+            subscribe: (_, __, { pubsub }) => pubsub.asyncIterator(['NEW_POST'])
+        }
     }
 
 }

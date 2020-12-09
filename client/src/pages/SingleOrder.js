@@ -1,6 +1,6 @@
 import React, { useContext, useState, useRef } from 'react'
 import gql from 'graphql-tag'
-import { useQuery, useMutation } from "@apollo/react-hooks"
+import { useQuery, useMutation, useSubscription } from "@apollo/react-hooks"
 import { Card, Grid, Button, Form } from 'semantic-ui-react'
 import { AuthContext } from '../context/auth';
 
@@ -116,6 +116,15 @@ export default function SingleOrder(props) {
 
     return postMarkup
 }
+
+const COMMENTS_SUBSCRIPTION = gql`
+  subscription {
+    newComment{
+      id
+      content
+    }
+  }
+`;
 
 const FETCH_POST_QUERY = gql`
   query($postId: ID!) {
